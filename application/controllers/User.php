@@ -111,5 +111,44 @@ class User extends CI_Controller {
 		echo json_encode($data);
 	}
 
+	function change_password($user_id)
+	{
+		$user_info = array(
+			'user_id' => $user_id
+		);
+
+		$data['page_title'] = "Change Password"; 
+		$data['user'] = $this->user_model->get_user($user_info); 
+		$this->load->view('admin/change_password', $data); 
+	}
+
+
+	function update_password($user_id)
+	{
+		$data = array(
+			"user_id" => $user_id, 
+			"password" => md5($_POST['password']),  
+		);
+		$update = $this->user_model->update($data);
+
+		if($update){
+			$data = array(
+				'response' => true,
+				'message' => "Password Successfully Updated!"
+			);
+
+		}else{
+
+			$data = array(
+				'response' => false,
+				'message' => "Unable to update  password!"
+			); 
+		}
+
+		echo json_encode($data);
+
+	}
+
+
 
 }
